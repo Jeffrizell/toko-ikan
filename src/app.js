@@ -88,13 +88,29 @@ form.addEventListener("keyup", function () {
 });
 
 // kirim data ketika tombol checkout diklik
-// checkoutButton.addEventListener("click", function (e) {
-//   e.preventDefault();
-//   const formData = new FormData(form);
-//   const data = new URLSearchParams(formData);
-//   const objData = Object.fromEntries(data).items;
-//   console.log(objData);
-// });
+checkoutButton.addEventListener("click", function (e) {
+  e.preventDefault();
+  const formData = new FormData(form);
+  const data = new URLSearchParams(formData);
+  const objData = Object.fromEntries(data);
+  const message = formatMessage(objData);
+  window.open("http://wa.me/6281247768431?text=" + encodeURIComponent(message));
+});
+
+// format pesan whatshapp
+const formatMessage = (obj) => {
+  return `Data Customer
+  Nama: ${obj.name}
+  Email: ${obj.email}
+  No HP: ${obj.phone}
+Data Pesanan
+  ${JSON.parse(obj.items).map(
+    (item) => `${item.name} (${item.quantity} x ${rupiah(item.total)}) \n`
+  )}
+TOTAL: ${rupiah(obj.total)}
+Terima Kasih.
+  `;
+};
 
 // konversi ke Rupiah
 const rupiah = (number) => {
