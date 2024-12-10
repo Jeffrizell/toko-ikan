@@ -34,6 +34,7 @@ document.addEventListener("alpine:init", () => {
             item.total = item.price * item.quantity;
             this.quantity++;
             this.total += item.price;
+
             return item;
           }
         });
@@ -55,6 +56,7 @@ document.addEventListener("alpine:init", () => {
             item.total = item.price * item.quantity;
             this.quantity--;
             this.total -= item.price;
+
             return item;
           }
         });
@@ -70,22 +72,50 @@ document.addEventListener("alpine:init", () => {
 
 // Form Validation
 const checkoutButton = document.querySelector(".checkout-button");
-checkoutButton.disabled = true;
+checkoutButton.disabled = true; // Menonaktifkan tombol saat halaman dimuat
 
 const form = document.querySelector("#checkoutForm");
 
 form.addEventListener("keyup", function () {
+  let allFilled = true; // Variabel untuk melacak apakah semua elemen terisi
+
   for (let i = 0; i < form.elements.length; i++) {
-    if (form.elements[i].value.length !== 0) {
-      checkoutButton.classList.remove("disabled");
-      checkoutButton.classList.add("disabled");
-    } else {
-      return false;
+    if (
+      form.elements[i].value.length === 0 &&
+      form.elements[i].type !== "hidden"
+    ) {
+      // Jika ada elemen yang kosong
+      allFilled = false; // Set variabel menjadi false
+      break; // Keluar dari loop
     }
   }
-  checkoutButton.disabled = false;
-  checkoutButton.classList.remove("disabled");
+
+  if (allFilled) {
+    checkoutButton.disabled = false; // Mengaktifkan tombol jika semua elemen terisi
+    checkoutButton.classList.remove("disabled");
+  } else {
+    checkoutButton.disabled = true; // Menonaktifkan tombol jika ada elemen yang kosong
+    checkoutButton.classList.add("disabled");
+  }
 });
+
+// const checkoutButton = document.querySelector(".checkout-button");
+// checkoutButton.disabled = true;
+
+// const form = document.querySelector("#checkoutForm");
+
+// form.addEventListener("keyup", function () {
+//   for (let i = 0; i < form.elements.length; i++) {
+//     if (form.elements[i].value.length !== 0) {
+//       checkoutButton.classList.remove("disabled");
+//       checkoutButton.classList.add("disabled");
+//     } else {
+//       return false;
+//     }
+//   }
+//   checkoutButton.disabled = false;
+//   checkoutButton.classList.remove("disabled");
+// });
 
 // kirim data ketika tombol checkout diklik
 checkoutButton.addEventListener("click", function (e) {
@@ -93,24 +123,39 @@ checkoutButton.addEventListener("click", function (e) {
   const formData = new FormData(form);
   const data = new URLSearchParams(formData);
   const objData = Object.fromEntries(data);
+  // console.log("Data form:", objData);
   const message = formatMessage(objData);
   window.open("http://wa.me/6281247768431?text=" + encodeURIComponent(message));
 });
 
 // format pesan whatshapp
 const formatMessage = (obj) => {
+  const items = JSON.parse(obj.items)
+    .map((item) => `${item.name} (${item.quantity} x ${rupiah(item.total)}) \n`)
+    .join("");
   return `Data Customer
   Nama: ${obj.name}
   Email: ${obj.email}
   No HP: ${obj.phone}
-Data Pesanan
-  ${JSON.parse(obj.items).map(
-    (item) => `${item.name} (${item.quantity} x ${rupiah(item.total)}) \n`
-  )}
-TOTAL: ${rupiah(obj.total)}
-Terima Kasih.
+  Data Pesanan
+  ${items}
+  TOTAL: ${rupiah(obj.total)}
+  Terima Kasih.
   `;
 };
+// const formatMessage = (obj) => {
+//   return `Data Customer
+//   Nama: ${obj.name}
+//   Email: ${obj.email}
+//   No HP: ${obj.phone}
+// Data Pesanan
+//   ${JSON.parse(obj.items).map(
+//     (item) => `${item.name} (${item.quantity} x ${rupiah(item.total)}) \n`
+//   )}
+// TOTAL: ${rupiah(obj.total)}
+// Terima Kasih.
+//   `;
+// };
 
 // konversi ke Rupiah
 const rupiah = (number) => {

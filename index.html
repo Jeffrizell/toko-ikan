@@ -95,11 +95,13 @@
               type="hidden"
               name="items"
               x-model="JSON.stringify($store.cart.items)"
+              autocomplete="off"
             />
             <input
               type="hidden"
               name="total"
-              x-model="$store.cart.items.total"
+              x-model="$store.cart.total"
+              autocomplete="off"
             />
             <h5>Costomer Detail</h5>
 
@@ -115,7 +117,7 @@
 
             <label for="phone">
               <span>Phone</span>
-              <input type="number" name="phone" id="phone" autocomplate="off" />
+              <input type="number" name="phone" id="phone" autocomplete="off" />
             </label>
 
             <button
