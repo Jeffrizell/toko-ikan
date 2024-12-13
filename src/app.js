@@ -1,11 +1,46 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("products", () => ({
     items: [
-      { id: 1, name: "Ikan Tuna Sirip Kuning", img: "1.jpg", price: 20000 },
-      { id: 2, name: "Ikan Selar", img: "2.jpg", price: 25000 },
-      { id: 3, name: "Ikan Kerapu", img: "3.jpg", price: 30000 },
-      { id: 4, name: "Ikan Jerungga", img: "4.jpg", price: 35000 },
-      { id: 5, name: "Ikan Neon Tetra", img: "5.jpg", price: 40000 },
+      {
+        id: 1,
+        name: "Ikan Tuna Sirip Kuning",
+        img: "1.jpg",
+        price: 20000,
+        description:
+          "Ikan Tuna Sirip Kuning adalah salah satu jenis tuna yang terkenal karena dagingnya yang lembut dan kaya akan omega-3. Warna kuning pada siripnya menandakan keunikannya. Cocok untuk berbagai masakan seperti Tuna bakar, steak Tuna, atau Ikan Kuah Kuning",
+      },
+      {
+        id: 2,
+        name: "Ikan Selar",
+        img: "2.jpg",
+        price: 25000,
+        description:
+          "Ikan Selar adalah ikan kecil yang populer di kalangan masyarakat karena rasanya yang gurih dan teksturnya yang lembut. Biasanya digoreng atau dibakar, ikan ini juga kaya akan protein dan vitamin B12.",
+      },
+      {
+        id: 3,
+        name: "Ikan Kerapu",
+        img: "3.jpg",
+        price: 30000,
+        description:
+          "Ikan Kerapu dikenal dengan dagingnya yang tebal dan rasa yang lezat. Biasanya digunakan dalam hidangan mewah seperti ikan bakar atau sup ikan. Ikan ini juga kaya akan nutrisi seperti protein, vitamin D, dan kalsium.",
+      },
+      {
+        id: 4,
+        name: "Ikan Jerungga",
+        img: "4.jpg",
+        price: 35000,
+        description:
+          "Ikan Jerungga adalah jenis ikan yang memiliki daging putih dan lembut. Rasanya yang manis dan teksturnya yang halus membuatnya cocok untuk dikukus atau dibuat menjadi kari ikan. Ikan ini juga mengandung banyak omega-3 dan vitamin E.",
+      },
+      {
+        id: 5,
+        name: "Ikan Neon Tetra",
+        img: "5.jpg",
+        price: 40000,
+        description:
+          "Ikan Neon Tetra adalah ikan kecil yang populer di kalangan masyarakat karena rasanya yang gurih dan teksturnya yang lembut. Biasanya digoreng atau dibakar, ikan ini juga kaya akan protein dan vitamin B12.",
+      },
     ],
   }));
 
@@ -99,24 +134,6 @@ form.addEventListener("keyup", function () {
   }
 });
 
-// const checkoutButton = document.querySelector(".checkout-button");
-// checkoutButton.disabled = true;
-
-// const form = document.querySelector("#checkoutForm");
-
-// form.addEventListener("keyup", function () {
-//   for (let i = 0; i < form.elements.length; i++) {
-//     if (form.elements[i].value.length !== 0) {
-//       checkoutButton.classList.remove("disabled");
-//       checkoutButton.classList.add("disabled");
-//     } else {
-//       return false;
-//     }
-//   }
-//   checkoutButton.disabled = false;
-//   checkoutButton.classList.remove("disabled");
-// });
-
 // kirim data ketika tombol checkout diklik
 checkoutButton.addEventListener("click", function (e) {
   e.preventDefault();
@@ -143,19 +160,6 @@ const formatMessage = (obj) => {
   Terima Kasih.
   `;
 };
-// const formatMessage = (obj) => {
-//   return `Data Customer
-//   Nama: ${obj.name}
-//   Email: ${obj.email}
-//   No HP: ${obj.phone}
-// Data Pesanan
-//   ${JSON.parse(obj.items).map(
-//     (item) => `${item.name} (${item.quantity} x ${rupiah(item.total)}) \n`
-//   )}
-// TOTAL: ${rupiah(obj.total)}
-// Terima Kasih.
-//   `;
-// };
 
 // konversi ke Rupiah
 const rupiah = (number) => {

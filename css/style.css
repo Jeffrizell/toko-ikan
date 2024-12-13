@@ -565,9 +565,9 @@ footer .credit a {
 
 .modal-container {
   position: relative;
-  background-color: #fefefe;
-  color: var(--primary);
-  margin: 15% auto;
+  background-color: #0a4c5a;
+  color: var(--white);
+  margin: 14% auto;
   padding: 1.2rem;
   border: 1px solid #666;
   width: 80%;
@@ -616,6 +616,10 @@ footer .credit a {
   color: #fff;
   margin-top: 1rem;
   padding: 1rem 1.6rem;
+}
+
+.product-icons svg {
+  pointer-events: none;
 }
 
 /* Media Queries */

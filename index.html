@@ -251,7 +251,14 @@
 
       <div class="row">
         <template x-for="(item, index) in items" x-key="index">
-          <div class="product-card">
+          <div
+            class="product-card"
+            :data-id="item.id"
+            :data-name="item.name"
+            :data-img="item.img"
+            :data-price="item.price"
+            :data-description="item.description"
+          >
             <div class="product-icons">
               <a href="#" @click.prevent="$store.cart.add(item)">
                 <svg
@@ -266,7 +273,7 @@
                   <use href="img/feather-sprite.svg#shopping-cart" />
                 </svg>
               </a>
-              <a href="#" class="itemDetailModal">
+              <a href="#item-detail-modal" class="item-detail-button">
                 <svg
                   width="24"
                   height="24"
@@ -419,7 +426,7 @@
     </footer>
     <!-- footer end -->
 
-    <!-- Modal Box Item Detail Start -->
+    <!-- Modal Box Item Detail For Start Ikan Tuna Sirip Kuning -->
     <div class="modal" id="item-detail-modal">
       <div class="modal-container">
         <a href="#" class="close-icon"><i data-feather="x"></i></a>
@@ -447,7 +454,7 @@
         </div>
       </div>
     </div>
-    <!-- Modal Box Item Detail End -->
+    <!-- Modal Box Item Detail End For Ikan Tuna Sirip Kuning -->
 
     <!-- Father Icons -->
     <script>

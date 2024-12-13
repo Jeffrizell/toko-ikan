@@ -41,27 +41,58 @@ document.addEventListener("click", function (e) {
 });
 
 // Modal Box
-const itemDetailModal = document.querySelector("#item-detail-modal");
-const itemDetailButtons = document.querySelectorAll(".item-detail-button");
+window.onclick = function () {
+  const itemDetailModal = document.querySelector("#item-detail-modal");
+  const itemDetailButtons = document.querySelectorAll(".item-detail-button");
 
-itemDetailButtons.forEach((button) => {
-  button.onclick = (e) => {
-    itemDetailModal.style.display = "flex";
+  // itemDetailButtons.forEach((button) => {
+  //   button.onclick = (e) => {
+  //     itemDetailModal.style.display = "flex";
+  //     e.preventDefault();
+  //   };
+  // });
+
+  // Event listener untuk setiap tombol detail item
+  itemDetailButtons.forEach((button) => {
+    button.addEventListener("click", function (event) {
+      event.preventDefault();
+      const productCard = button.closest(".product-card");
+
+      // Ambil data dari elemen product-card
+      const productId = productCard.getAttribute("data-id");
+      const productName =
+        productCard.getAttribute("data-name") || "Nama tidak tersedia";
+      const productImg = productCard.getAttribute("data-img") || "defauld.jpg";
+      const productPrice =
+        productCard.getAttribute("data-price") || "Harga tidak tersedia";
+      const productDescription =
+        productCard.getAttribute("data-description") ||
+        "Deskripsi tidak tersedia";
+
+      // Update konten modal
+      itemDetailModal.querySelector("img").src = `img/products/${productImg}`;
+      itemDetailModal.querySelector("h3").textContent = productName;
+      itemDetailModal.querySelector(
+        ".product-price"
+      ).textContent = `IDR ${productPrice}`;
+      itemDetailModal.querySelector("p").textContent = productDescription;
+
+      // Tampilkan modal
+      itemDetailModal.style.display = "flex";
+      event.preventDefault();
+    });
+  });
+
+  // klik tombol close modal!
+  document.querySelector(".modal .close-icon").onclick = (e) => {
+    itemDetailModal.style.display = "none";
     e.preventDefault();
   };
-});
 
-// klik tombol close modal
-document.querySelector(".modal .close-icon").onclick = (e) => {
-  itemDetailModal.style.display = "none";
-  e.preventDefault();
+  // klik di luar modal!
+  window.onclick = (e) => {
+    if (e.target === itemDetailModal) {
+      itemDetailModal.style.display = "none";
+    }
+  };
 };
-
-// klik di luar modal
-window.onclick = (e) => {
-  if (e.target === itemDetailModal) {
-    itemDetailModal.style.display = "none";
-  }
-};
-
-// ketika Tombol Kirim Pesan Diklik
