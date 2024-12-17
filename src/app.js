@@ -5,7 +5,7 @@ document.addEventListener("alpine:init", () => {
         id: 1,
         name: "Ikan Tuna Sirip Kuning",
         img: "1.jpg",
-        price: 20000,
+        price: "20000",
         description:
           "Ikan Tuna Sirip Kuning adalah salah satu jenis tuna yang terkenal karena dagingnya yang lembut dan kaya akan omega-3. Warna kuning pada siripnya menandakan keunikannya. Cocok untuk berbagai masakan seperti Tuna bakar, steak Tuna, atau Ikan Kuah Kuning",
       },
@@ -13,7 +13,7 @@ document.addEventListener("alpine:init", () => {
         id: 2,
         name: "Ikan Selar",
         img: "2.jpg",
-        price: 25000,
+        price: "25000",
         description:
           "Ikan Selar adalah ikan kecil yang populer di kalangan masyarakat karena rasanya yang gurih dan teksturnya yang lembut. Biasanya digoreng atau dibakar, ikan ini juga kaya akan protein dan vitamin B12.",
       },
@@ -21,7 +21,7 @@ document.addEventListener("alpine:init", () => {
         id: 3,
         name: "Ikan Kerapu",
         img: "3.jpg",
-        price: 30000,
+        price: "30000",
         description:
           "Ikan Kerapu dikenal dengan dagingnya yang tebal dan rasa yang lezat. Biasanya digunakan dalam hidangan mewah seperti ikan bakar atau sup ikan. Ikan ini juga kaya akan nutrisi seperti protein, vitamin D, dan kalsium.",
       },
@@ -29,7 +29,7 @@ document.addEventListener("alpine:init", () => {
         id: 4,
         name: "Ikan Jerungga",
         img: "4.jpg",
-        price: 35000,
+        price: "35000",
         description:
           "Ikan Jerungga adalah jenis ikan yang memiliki daging putih dan lembut. Rasanya yang manis dan teksturnya yang halus membuatnya cocok untuk dikukus atau dibuat menjadi kari ikan. Ikan ini juga mengandung banyak omega-3 dan vitamin E.",
       },
@@ -37,7 +37,7 @@ document.addEventListener("alpine:init", () => {
         id: 5,
         name: "Ikan Neon Tetra",
         img: "5.jpg",
-        price: 40000,
+        price: "40000",
         description:
           "Ikan Neon Tetra adalah ikan kecil yang populer di kalangan masyarakat karena rasanya yang gurih dan teksturnya yang lembut. Biasanya digoreng atau dibakar, ikan ini juga kaya akan protein dan vitamin B12.",
       },
@@ -49,55 +49,43 @@ document.addEventListener("alpine:init", () => {
     total: 0,
     quantity: 0,
     add(newItem) {
-      // cek apakah ada barang yang sama di cart
-      const cartItem = this.items.find((item) => item.id === newItem.id);
+      console.log("Menambahkan item:", newItem);
 
-      // jika belum ada / cart masih kosong
+      // Cek apakah ada barang yang sama di cart
+      const cartItem = this.items.find((item) => item.id == newItem.id); // Periksa dengan tipe data yang sama
+      console.log("Item dalam keranjang:", cartItem);
+
+      // Jika belum ada / cart masih kosong
       if (!cartItem) {
-        this.items.push({ ...newItem, quantity: 1, total: newItem.price });
-        this.quantity++;
-        this.total += newItem.price;
-      } else {
-        // jika kalau barang sudah ada, cek apakah barang beda atau sama dengan yang ada di cart
-        this.items = this.items.map((item) => {
-          // jika barang berbeda
-          if (item.id !== newItem.id) {
-            return item;
-          } else {
-            // jika barang sudah ada, tambah quantity dan totalnya
-            item.quantity++;
-            item.total = item.price * item.quantity;
-            this.quantity++;
-            this.total += item.price;
-
-            return item;
-          }
+        this.items.push({
+          ...newItem,
+          quantity: 1,
+          total: parseFloat(newItem.price),
         });
+      } else {
+        // Jika barang sudah ada, tambah quantity dan totalnya
+        cartItem.quantity++;
+        cartItem.total = parseFloat(cartItem.price) * cartItem.quantity;
       }
+
+      // Update total kuantitas dan harga total
+      this.quantity++;
+      this.total += parseFloat(newItem.price);
+
+      console.log("Keranjang setelah menambahkan:", this.items);
     },
     remove(id) {
-      // ambil item yang mau diremove berdasarkan id nya
-      const cartItem = this.items.find((item) => item.id === id);
+      // Ambil item yang mau diremove berdasarkan id nya
+      const cartItem = this.items.find((item) => item.id == id); // Periksa dengan tipe data yang sama
 
-      // jika item lebih dari 1
+      // Jika item lebih dari 1
       if (cartItem.quantity > 1) {
-        // telusuri 1 1
-        this.items = this.items.map((item) => {
-          // jika bukan barang yang diklik
-          if (item.id !== id) {
-            return item;
-          } else {
-            item.quantity--;
-            item.total = item.price * item.quantity;
-            this.quantity--;
-            this.total -= item.price;
-
-            return item;
-          }
-        });
+        cartItem.quantity--;
+        cartItem.total = cartItem.price * cartItem.quantity;
+        this.quantity--;
+        this.total -= cartItem.price;
       } else if (cartItem.quantity === 1) {
-        // jika barang sisa 1
-        this.items = this.items.filter((item) => item.id !== id);
+        this.items = this.items.filter((item) => item.id != id);
         this.quantity--;
         this.total -= cartItem.price;
       }

@@ -6,6 +6,40 @@ document.querySelector("#hamburger-menu").onclick = () => {
 };
 
 // Toggle class active untuk search form
+// const searchForm = document.querySelector(".search-form");
+// const searchBox = document.querySelector("#search-box");
+// const searchButton = document.querySelector("#search-button");
+// searchButton.onclick = (e) => {
+//   e.preventDefault(); // Hentikan tindakan default
+//   searchForm.classList.toggle("active");
+//   searchBox.focus();
+// };
+// // Fungsi untuk melakukan pencarian produk
+// searchButton.addEventListener("click", function (event) {
+//   event.preventDefault();
+//   const query = searchBox.value.toLowerCase();
+//   if (query) {
+//     // Cari produk berdasarkan nama
+//     const product = Alpine.store("products").items.find((item) =>
+//       item.name.toLowerCase().includes(query)
+//     );
+//     if (product) {
+//       // Perbarui konten modal dengan detail produk yang ditemukan
+//       const itemDetailModal = document.querySelector("#item-detail-modal");
+//       itemDetailModal.querySelector("img").src = `img/products/${product.img}`;
+//       itemDetailModal.querySelector("h3").textContent = product.name;
+//       itemDetailModal.querySelector(
+//         ".product-price"
+//       ).textContent = `IDR ${product.price}`;
+//       itemDetailModal.querySelector("p").textContent = product.description;
+//       // Tampilkan modal
+//       itemDetailModal.style.display = "flex";
+//     } else {
+//       alert("Produk tidak ditemukan!");
+//     }
+//   }
+// });
+
 const searchForm = document.querySelector(".search-form");
 const searchBox = document.querySelector("#search-box");
 
@@ -41,33 +75,35 @@ document.addEventListener("click", function (e) {
 });
 
 // Modal Box
-window.onclick = function () {
+// Fungsi utama untuk menangani klik pada window
+window.onclick = function (event) {
   const itemDetailModal = document.querySelector("#item-detail-modal");
   const itemDetailButtons = document.querySelectorAll(".item-detail-button");
-
-  // itemDetailButtons.forEach((button) => {
-  //   button.onclick = (e) => {
-  //     itemDetailModal.style.display = "flex";
-  //     e.preventDefault();
-  //   };
-  // });
 
   // Event listener untuk setiap tombol detail item
   itemDetailButtons.forEach((button) => {
     button.addEventListener("click", function (event) {
       event.preventDefault();
+      event.stopPropagation(); // Hentikan propagasi peristiwa
+
       const productCard = button.closest(".product-card");
 
       // Ambil data dari elemen product-card
       const productId = productCard.getAttribute("data-id");
       const productName =
         productCard.getAttribute("data-name") || "Nama tidak tersedia";
-      const productImg = productCard.getAttribute("data-img") || "defauld.jpg";
+      const productImg = productCard.getAttribute("data-img") || "default.jpg"; // Perbaikan typo
       const productPrice =
-        productCard.getAttribute("data-price") || "Harga tidak tersedia";
+        parseFloat(productCard.getAttribute("data-price")) || 0;
       const productDescription =
         productCard.getAttribute("data-description") ||
         "Deskripsi tidak tersedia";
+
+      // Pastikan harga valid
+      if (isNaN(productPrice)) {
+        console.error("Harga produk tidak valid:", productPrice);
+        return;
+      }
 
       // Update konten modal
       itemDetailModal.querySelector("img").src = `img/products/${productImg}`;
@@ -79,20 +115,42 @@ window.onclick = function () {
 
       // Tampilkan modal
       itemDetailModal.style.display = "flex";
-      event.preventDefault();
+
+      // Periksa apakah elemen "add to cart" ada di dalam modal
+      const addToCartButton =
+        itemDetailModal.querySelector(".add-to-cart-modal");
+      if (addToCartButton) {
+        // Event listener untuk tombol "add to cart" dalam modal
+        addToCartButton.onclick = function (event) {
+          event.preventDefault(); // Hentikan tindakan default dari tombol
+          event.stopPropagation(); // Hentikan propagasi peristiwa
+
+          // Panggil fungsi add dari Alpine.js store untuk menambahkan produk ke keranjang
+          Alpine.store("cart").add({
+            id: productId,
+            name: productName,
+            img: productImg,
+            price: productPrice,
+            description: productDescription,
+          });
+          itemDetailModal.style.display = "none"; // Tutup modal setelah menambahkan ke keranjang
+        };
+      } else {
+        console.error(
+          "Tidak ditemukan tombol 'add-to-cart-modal' dalam modal."
+        );
+      }
     });
   });
 
-  // klik tombol close modal!
+  // Klik tombol close modal
   document.querySelector(".modal .close-icon").onclick = (e) => {
     itemDetailModal.style.display = "none";
     e.preventDefault();
   };
 
-  // klik di luar modal!
-  window.onclick = (e) => {
-    if (e.target === itemDetailModal) {
-      itemDetailModal.style.display = "none";
-    }
-  };
+  // Klik di luar modal
+  if (event.target === itemDetailModal) {
+    itemDetailModal.style.display = "none";
+  }
 };
