@@ -5,41 +5,7 @@ document.querySelector("#hamburger-menu").onclick = () => {
   navbarNav.classList.toggle("active");
 };
 
-// Toggle class active untuk search form
-// const searchForm = document.querySelector(".search-form");
-// const searchBox = document.querySelector("#search-box");
-// const searchButton = document.querySelector("#search-button");
-// searchButton.onclick = (e) => {
-//   e.preventDefault(); // Hentikan tindakan default
-//   searchForm.classList.toggle("active");
-//   searchBox.focus();
-// };
-// // Fungsi untuk melakukan pencarian produk
-// searchButton.addEventListener("click", function (event) {
-//   event.preventDefault();
-//   const query = searchBox.value.toLowerCase();
-//   if (query) {
-//     // Cari produk berdasarkan nama
-//     const product = Alpine.store("products").items.find((item) =>
-//       item.name.toLowerCase().includes(query)
-//     );
-//     if (product) {
-//       // Perbarui konten modal dengan detail produk yang ditemukan
-//       const itemDetailModal = document.querySelector("#item-detail-modal");
-//       itemDetailModal.querySelector("img").src = `img/products/${product.img}`;
-//       itemDetailModal.querySelector("h3").textContent = product.name;
-//       itemDetailModal.querySelector(
-//         ".product-price"
-//       ).textContent = `IDR ${product.price}`;
-//       itemDetailModal.querySelector("p").textContent = product.description;
-//       // Tampilkan modal
-//       itemDetailModal.style.display = "flex";
-//     } else {
-//       alert("Produk tidak ditemukan!");
-//     }
-//   }
-// });
-
+//Toggle class active untuk search form
 const searchForm = document.querySelector(".search-form");
 const searchBox = document.querySelector("#search-box");
 
@@ -154,3 +120,24 @@ window.onclick = function (event) {
     itemDetailModal.style.display = "none";
   }
 };
+
+// Kontak
+document
+  .querySelector("#contact-form")
+  .addEventListener("submit", function (event) {
+    event.preventDefault(); // Mencegah tindakan default form
+
+    const name = document.querySelector("#name").value;
+    const email = document.querySelector("#email").value;
+    const phone = document.querySelector("#phone").value;
+
+    const message = `Nama: ${name}\nEmail: ${email}\nNo WhatsApp: ${phone}`;
+
+    // Buat URL WhatsApp dengan pesan yang diisi sebelumnya
+    const url = `https://wa.me/6281247768431?text=${encodeURIComponent(
+      message
+    )}`;
+
+    // Buka URL WhatsApp di tab baru
+    window.open(url, "_blank");
+  });
